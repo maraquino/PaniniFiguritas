@@ -2,6 +2,9 @@ package ar.edu.unlam.pb2;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 public class TestPanini {
@@ -85,11 +88,8 @@ public class TestPanini {
 		actual.agregarUsuario(usuarioFinal);
 
 		Figurita figurita1 =new Figurita(3, "D", Seleccion.ARGENTINA, "Messi",100.0);
-		System.out.println(figurita1);
 		Figurita figurita2 =new Figurita(2, "A", Seleccion.QATAR, "Messi",100.0);
-		System.out.println(figurita2);
 		Figurita figurita3 =new Figurita(1, "B", Seleccion.ECUADOR, "Messi",100.0);
-		System.out.println(figurita3);
 		
 		try {
 			((UsuarioFinal)usuarioFinal).agregarFigurita(figurita1, actual);
@@ -98,7 +98,45 @@ public class TestPanini {
 		} catch (CodigoExistente e) {
 			e.printStackTrace();
 		}
-		System.out.println(((UsuarioFinal)usuarioFinal).getStock());
+		
+		List <Figurita>listaOrdenada=new ArrayList<>();
+		
+		listaOrdenada.add(figurita2);
+		listaOrdenada.add(figurita3);
+		listaOrdenada.add(figurita1);
+		
+		List <Figurita>listaObtenida=((UsuarioFinal)usuarioFinal).getStock();
+		
+		assertEquals(listaOrdenada, listaObtenida);
+	}
+	
+	@Test
+	public void queLasFiguritasAgregadasPorElAdministradorQuedenOrdenadas() {		
+		UsuarioRegistrado administrador= new Administrador(1,"nombre");
+		Sistema actual= new Sistema("nombre");
+		actual.agregarUsuario(administrador);
+
+		Figurita figurita1 =new Figurita(3, "D", Seleccion.ARGENTINA, "Messi",100.0);
+		Figurita figurita2 =new Figurita(2, "A", Seleccion.QATAR, "Messi",100.0);
+		Figurita figurita3 =new Figurita(1, "B", Seleccion.ECUADOR, "Messi",100.0);
+		
+		try {
+			((Administrador)administrador).agregarFigurita(figurita1, actual);
+			((Administrador)administrador).agregarFigurita(figurita2, actual);
+			((Administrador)administrador).agregarFigurita(figurita3, actual);
+		} catch (CodigoExistente e) {
+			e.printStackTrace();
+		}
+		
+		List <Figurita>listaOrdenada=new ArrayList<>();
+		listaOrdenada.add(figurita2);
+		listaOrdenada.add(figurita3);
+		listaOrdenada.add(figurita1);
+		
+		List <Figurita>listaObtenida=new ArrayList<>();
+		listaObtenida.addAll(actual.getFiguritas());
+		
+		assertEquals(listaOrdenada, listaObtenida);
 	}
 	
 	@Test (expected=CodigoExistente.class)

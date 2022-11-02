@@ -1,5 +1,6 @@
 package ar.edu.unlam.pb2;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -57,6 +58,10 @@ public class Sistema {
 				return true;
 			} 
 		} return false;
+	}
+
+	public Set<Figurita> getFiguritas() {
+		return figuritas;
 	}
 
 }
